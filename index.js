@@ -23,7 +23,7 @@ var setupOptions = function(options) {
 
   if (!options.compareFunc) {
     options.compareFunc = function(o1, o2) {
-      return o1[options.name] === o2[options.name];
+      return o1 === o2[options.name];
     };
   }
 
@@ -34,8 +34,11 @@ var generateAddFunction = function(collectionPath, options) {
   return function(objectOrId, cb) {
     // TODO: Doesn't work in static case - need to do a find and update instead.
     var collection = this[collectionPath];
-    
-    var foundIdx = _.findIndex(collection, options.compareFunc);
+
+    var foundIdx = _.findIndex(collection, function(entry) {
+      return options.compareFunc(objectOrId, entry);
+    });
+
     if (options.duplicatesAllowed || foundIdx === -1) {
       var newObject = {};
       newObject[options.name] = objectOrId;
@@ -64,7 +67,7 @@ var plugin = function(schema, options) {
 
   var fields = {};
   var docSchema = {};
-  docSchema[options.dateName] = { type: Date, 'default': Date.now };
+  docSchema[options.dateFieldName] = { type: Date, 'default': Date.now };
 
   if (options.object) {
     docSchema[options.name] = options.object;
