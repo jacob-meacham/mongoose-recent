@@ -1,9 +1,12 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var mockgoose = require('mockgoose');
 var recent = require('../index');
 var chai = require('chai');
 chai.should();
+
+mockgoose(mongoose);
 
 describe('mongoose-recent', function() {
   var Schema;

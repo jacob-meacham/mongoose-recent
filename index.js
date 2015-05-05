@@ -1,7 +1,11 @@
 'use strict';
 
+var mongoose = require('mongoose');
+var Promise = require('bluebird');
 var _ = require('lodash');
-var DefaultObjectId = require('mongoose').Schema.Types.ObjectId;
+
+Promise.promisifyAll(mongoose);
+var DefaultObjectId = mongoose.Schema.Types.ObjectId;
 
 // TODO: Promise or callback
 var setupOptions = function(options) {
@@ -42,7 +46,12 @@ var generateAddFunction = function(collectionName, options) {
     }
 
     this[collectionName] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
-    this.save(cb);
+
+    if (cb) {
+      this.save(cb);
+    } else {
+      return this.saveAsync();
+    }
   };
 };
 
@@ -68,9 +77,8 @@ var plugin = function(schema, options) {
 
   schema.statics[addFuncName] = generateAddFunction(collectionName, options);
   schema.methods[addFuncName] = function(objectOrId, cb) {
-    this.constructor[addFuncName].call(this.constructor, this._id, objectOrId, cb);
+    return this.constructor[addFuncName].call(this.constructor, this._id, objectOrId, cb);
   };
 };
-
 
 module.exports = exports = plugin;

@@ -30,9 +30,13 @@
   "scripts": {
     "test": "node node_modules/grunt-cli/bin/grunt ci"
   },
-  "dependencies": { },
+  "dependencies": { 
+    "bluebird": "2.9.25",
+    "lodash": "2.4.1"
+  },
   "devDependencies": {
     "mongoose": "3.8.9",
+    "mockgoose": "1.10.7",
     "coveralls": "2.11.2",
     "grunt": "0.4.5",
     "grunt-cli": "0.1.13",
