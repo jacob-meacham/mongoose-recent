@@ -19,7 +19,7 @@ var setupOptions = function(options) {
     duplicatesAllowed: false
   };
 
-  _.extend(options, defaults);
+  options = _.defaults(options, defaults);
 
   if (!options.compareFunc) {
     options.compareFunc = function(o1, o2) {
