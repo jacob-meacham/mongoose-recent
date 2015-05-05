@@ -1,0 +1,54 @@
+{
+  "name": "mongoose-recent",
+  "description": "A mongoose plugin for handling recently accessed data to be stored on a document.",
+  "version": "0.1.0",
+  "keywords": [
+    "mongoose"
+  ],
+  "homepage": "https://github.com/jacob-meacham/mongoose-recent",
+  "author": {
+    "name": "jemonjam",
+    "url": "http://jemonjam.com"
+  },
+  "bugs": {
+    "url": "https://github.com/jacob-meacham/mongoose-recent/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jacob-meacham/mongoose-recent.git"
+  },
+  "licenses": [
+    {
+      "name": "MIT",
+      "url": "https://github.com/jacob-meacham/mongoose-recent/blob/master/LICENSE"
+    }
+  ],
+  "main": "./index.js",
+  "files": [
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node node_modules/grunt-cli/bin/grunt ci"
+  },
+  "dependencies": { 
+    "bluebird": "2.9.25",
+    "lodash": "3.8.0"
+  },
+  "devDependencies": {
+    "mongoose": "3.8.9",
+    "mockgoose": "1.10.7",
+    "coveralls": "2.11.2",
+    "grunt": "0.4.5",
+    "grunt-cli": "0.1.13",
+    "grunt-contrib-jshint": "0.11.2",
+    "jshint-stylish": "1.0.2",
+    "load-grunt-tasks": "3.1.0",
+    "grunt-lcov-merge": "0.1.2",
+    "grunt-mocha-istanbul": "2.4.0",
+    "grunt-mocha-test": "0.12.7",
+    "chai": "2.3.0"
+  },
+  "peerDependencies": {
+    "mongoose": "> 3.5 < 4"
+  }
+}
