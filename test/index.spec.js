@@ -126,7 +126,7 @@ describe('mongoose-recent', function() {
 
   it('should use the passed compare function', function() {
     var compareFunc = function(o1, o2) {
-      return o1.foo === o2.view.foo;
+      return o1.foo === o2.foo;
     };
 
     Schema.plugin(recent, { schemaType: { foo: String }, compareFunc: compareFunc } );
@@ -139,6 +139,7 @@ describe('mongoose-recent', function() {
       return testDoc.addRecentView({foo: 'ha'});
     }).spread(function(me) {
       me.recentViews.should.have.length(2);
+      console.log(me.recentViews[0]);
       me.recentViews[0].view.toObject().should.eql({foo: 'ha'});
     });
   });

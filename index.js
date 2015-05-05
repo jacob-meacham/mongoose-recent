@@ -23,7 +23,7 @@ var setupOptions = function(options) {
 
   if (!options.compareFunc) {
     options.compareFunc = function(o1, o2) {
-      return o1 === o2[options.name];
+      return o1 === o2;
     };
   }
 
@@ -36,7 +36,7 @@ var generateAddFunction = function(collectionPath, options) {
     var collection = this[collectionPath];
 
     var foundIdx = _.findIndex(collection, function(entry) {
-      return options.compareFunc(objectOrId, entry);
+      return options.compareFunc(objectOrId, entry[options.name]);
     });
 
     if (options.allowDuplicates || foundIdx === -1) {
