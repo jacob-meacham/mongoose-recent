@@ -139,7 +139,6 @@ describe('mongoose-recent', function() {
       return testDoc.addRecentView({foo: 'ha'});
     }).spread(function(me) {
       me.recentViews.should.have.length(2);
-      console.log(me.recentViews[0]);
       me.recentViews[0].view.toObject().should.eql({foo: 'ha'});
     });
   });
