@@ -15,7 +15,7 @@ var setupOptions = function(options) {
     name: 'view',
     numToKeep: 10,
     idType: DefaultObjectId,
-    dateName: 'date',
+    dateFieldName: 'date',
     duplicatesAllowed: false
   };
 
@@ -30,10 +30,10 @@ var setupOptions = function(options) {
   return options;
 };
 
-var generateAddFunction = function(collectionName, options) {
+var generateAddFunction = function(collectionPath, options) {
   return function(objectOrId, cb) {
     // TODO: Doesn't work in static case - need to do a find and update instead.
-    var collection = this[collectionName];
+    var collection = this[collectionPath];
     
     var foundIdx = _.findIndex(collection, options.compareFunc);
     if (options.duplicatesAllowed || foundIdx === -1) {
@@ -42,10 +42,10 @@ var generateAddFunction = function(collectionName, options) {
       collection.push(newObject);
     } else {
       var entry = collection[foundIdx];
-      entry[options.dateName] = Date.now();
+      entry[options.dateFieldName] = Date.now();
     }
 
-    this[collectionName] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
+    this[collectionPath] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
 
     if (cb) {
       this.save(cb);
@@ -59,10 +59,10 @@ var plugin = function(schema, options) {
   options = setupOptions(options);
   
   var upperCasedName = options.name.charAt(0).toUpperCase() + options.name.slice(1);
-  var collectionName = options.collectionName || 'recent' + upperCasedName + 's';
+  var collectionPath = options.collectionPath || 'recent' + upperCasedName + 's';
   var addFuncName = options.addFunctionName || 'addRecent' + upperCasedName;
 
-  var schemaAdditions = {};
+  var fields = {};
   var docSchema = {};
   docSchema[options.dateName] = { type: Date, 'default': Date.now };
 
@@ -72,10 +72,13 @@ var plugin = function(schema, options) {
     docSchema[options.name] = options.idType;
   }
 
-  schemaAdditions[collectionName] = docSchema;
-  schema.add(schemaAdditions);
+  fields[collectionPath] = [docSchema];
 
-  schema.statics[addFuncName] = generateAddFunction(collectionName, options);
+  if (!schema.paths[collectionPath]) {
+    schema.add(fields);
+  }
+
+  schema.statics[addFuncName] = generateAddFunction(collectionPath, options);
   schema.methods[addFuncName] = function(objectOrId, cb) {
     return this.constructor[addFuncName].call(this.constructor, this._id, objectOrId, cb);
   };
