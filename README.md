@@ -49,6 +49,7 @@ Type: `String`<br/>
 Default: `view`
 
 In many cases, this is the only option you'll need to set. This should usually be a singular noun and will be used to set the following three things:
+
 1. The collection, which will be named recent{options.name}s
 2. The instance method, which will be named addRecent{options.name}
 3. The property in the collection, which will be named {options.name}
@@ -62,7 +63,7 @@ console.log(doc.recentItems); // [], with the schema {item: ObjectId, date: Date
 console.log(doc.addRecentItem); // [Function]
 ```
 
-If you'd like more control over how everything is named, see [collectionPath](#collectionPath), [addFunctionName](#addFunctionName), and [dateFieldName](#dateFieldName).
+If you'd like more control over how everything is named, see [collectionPath](#collectionpath), [addFunctionName](#addfunctionname), and [dateFieldName](#datefieldname).
 
 #### numToKeep:
 Type: `Number`<br/>
