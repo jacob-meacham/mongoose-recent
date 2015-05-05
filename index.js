@@ -14,9 +14,9 @@ var setupOptions = function(options) {
   var defaults = {
     name: 'view',
     numToKeep: 10,
-    idType: DefaultObjectId,
+    schemaType: DefaultObjectId,
     dateFieldName: 'date',
-    duplicatesAllowed: false
+    allowDuplicates: false
   };
 
   options = _.defaults(options, defaults);
@@ -39,7 +39,7 @@ var generateAddFunction = function(collectionPath, options) {
       return options.compareFunc(objectOrId, entry);
     });
 
-    if (options.duplicatesAllowed || foundIdx === -1) {
+    if (options.allowDuplicates || foundIdx === -1) {
       var newObject = {};
       newObject[options.name] = objectOrId;
       collection.push(newObject);
@@ -68,12 +68,7 @@ var plugin = function(schema, options) {
   var fields = {};
   var docSchema = {};
   docSchema[options.dateFieldName] = { type: Date, 'default': Date.now };
-
-  if (options.object) {
-    docSchema[options.name] = options.object;
-  } else {
-    docSchema[options.name] = options.idType;
-  }
+  docSchema[options.name] = options.schemaType;
 
   fields[collectionPath] = [docSchema];
 
