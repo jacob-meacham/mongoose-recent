@@ -78,10 +78,8 @@ var plugin = function(schema, options) {
     schema.add(fields);
   }
 
-  schema.statics[addFuncName] = generateAddFunction(collectionPath, options);
-  schema.methods[addFuncName] = function(objectOrId, cb) {
-    return this.constructor[addFuncName].call(this.constructor, this._id, objectOrId, cb);
-  };
+  // TODO: Also add static
+  schema.methods[addFuncName] = generateAddFunction(collectionPath, options);
 };
 
 module.exports = exports = plugin;
