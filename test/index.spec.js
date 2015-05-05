@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var mockgoose = require('mockgoose');
+var Promise = require('bluebird');
 var recent = require('../index');
 var chai = require('chai');
 chai.should();
@@ -119,20 +120,53 @@ describe('mongoose-recent', function() {
 
     return testDoc.addRecentView({foo: 'ha'}).spread(function(me) {
       me.recentViews.should.have.length(1);
-      me.recentViews[0].view.foo.should.eql('ha');
-      me.recentViews[0].view.bar.should.eql('whee');
+      me.recentViews[0].view.toObject().should.eql({foo: 'ha', bar: 'whee'});
     });
   });
 
-  it('should use a proper compare function with an object using the default name', function() {
+  it('should use the passed compare function', function() {
+    var compareFunc = function(o1, o2) {
+      return o1.foo === o2.view.foo;
+    };
 
+    Schema.plugin(recent, { schemaType: { foo: String }, compareFunc: compareFunc } );
+    var Test = mongoose.model('TestCompare', Schema);
+    var testDoc = new Test();
+
+    return testDoc.addRecentView({foo: 'ha'}).then(function() {
+      return testDoc.addRecentView({foo: 'ya'});
+    }).delay(10).then(function() {
+      return testDoc.addRecentView({foo: 'ha'});
+    }).spread(function(me) {
+      me.recentViews.should.have.length(2);
+      me.recentViews[0].view.toObject().should.eql({foo: 'ha'});
+    });
   });
 
-  it('should use the passed compare function', function() {
+  it('should allow using a callback', function(done) {
+    Schema.plugin(recent);
+    var Test = mongoose.model('TestCallback', Schema);
+    var testDoc = new Test();
 
+    testDoc.addRecentView(mongoose.Types.ObjectId(), function(err, me) {
+      expect(err).to.not.exist;
+      expect(me.recentViews).to.exist;
+      done();
+    });
   });
 
   it('should use the passed number of records to keep', function() {
+    Schema.plugin(recent, { numToKeep: 3 });
+    var Test = mongoose.model('TestNumToKeep', Schema);
+    var testDoc = new Test();
 
+    var views = [];
+    for (var i = 0; i < 4; i++) {
+      views.push(testDoc.addRecentView(mongoose.Types.ObjectId()));
+    }
+
+    Promise.all(views).then(function() {
+      testDoc.recentViews.should.have.length(3);
+    });
   });
 });
