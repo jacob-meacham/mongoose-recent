@@ -169,4 +169,33 @@ describe('mongoose-recent', function() {
       testDoc.recentViews.should.have.length(3);
     });
   });
+
+  it('should allow using a static function', function() {
+    Schema.plugin(recent);
+    var Test = mongoose.model('TestStatic', Schema);
+    var testDoc = new Test();
+
+    testDoc.saveAsync().spread(function(me) {
+      return Test.addRecentView({_id: me._id}, mongoose.Types.ObjectId());
+    }).spread(function(me) {
+      me._id.should.eql(testDoc._id);
+      me.recentViews.should.have.length(1);
+    });
+  });
+
+  it('should allow using a static function with a callback', function(done) {
+    Schema.plugin(recent);
+    var Test = mongoose.model('TestStaticCallback', Schema);
+    var testDoc = new Test();
+
+    testDoc.saveAsync().spread(function(me) {
+      Test.addRecentView({_id: me._id}, mongoose.Types.ObjectId(), function(err, me) {
+        expect(err).to.not.exist;
+        
+        me._id.should.eql(testDoc._id);
+        me.recentViews.should.have.length(1);
+        done();
+      });
+    });
+  });
 });

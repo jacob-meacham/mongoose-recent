@@ -24,15 +24,15 @@ kitty.addRecentHairball('morningHairball', function(err, cat) {
    console.log(cat.recentHairballs[0].hairball); // morningHairball 
 });
 
-// You can also add hairballs with bluebird promises
+// You can also add hairballs with promises
 kitty.addRecentHairball('eveningHairball').spread(function(cat) {
     console.log(cat.recentHairballs[0]); // { hairball: 'eveningHairball', date: Tue May 05 2015 10:17:53 }
 });
 ```
-(see a working example of this in [examples/](../blob/master/examples/))
+(see a working example of this in [examples/](../blob/develop/examples/))
 
 ### Usage
-mongoose-recent adds a new collection to your document, along with an instance method for adding recent items. This collection is kept in a date-sorted order (newest at the top), and by default does not allow duplicates and has a maximum size of 10 entries. If you re-add an entry that already exists in the collection, it will be bubbled back up to the top.
+mongoose-recent adds a new collection to your document, along with instance and static methods for adding recent items. This collection is kept in a date-sorted order (newest at the top), and by default does not allow duplicates and has a maximum size of 10 entries. If you re-add an entry that already exists in the collection, it will be bubbled back up to the top.
 
 This plugin is intended to be used whenever you find yourself with a collection sorted by date. For example:
 * Recent items that a customer has viewed
@@ -47,6 +47,45 @@ var recentPlugin = require('mongoose-recent');
 
 var UserSchema = new mongoose.Schema(...);
 UserSchema.plugin(recentPlugin);
+```
+
+#### Adding to the collection
+You can add to the recent items collection either with an instance method on the document, or a static method on the model. You can also use callbacks, which follow the standard mongoose/node callback structure (err, object), or use all the power of [bluebird](https://github.com/petkaantonov/bluebird) promises.
+
+With Callbacks:
+```javascript
+User.addRecentView({_id: someId}, productId, function(err, user) {
+    if (err) {
+        // ...
+    }
+
+    console.log(user.recentViews); // Our new product id is at the top.
+});
+
+var user = new User();
+user.addRecentView(productId, function(err, _user) {
+    if (err) {
+        // ...
+    }
+
+    console.log(_user.recentViews); // Our new product id is at the top. 
+});
+```
+
+With Promises:
+```javascript
+User.addRecentView({_id: someId}, productId).spread(function(_user) { // Pass in a query, just like you would for find one
+    console.log(_user.recentViews); // Our new product id is at the top.
+}).catch(function(err) {
+    // ...
+});
+
+user = new User();
+user.addRecentView(productId).spread(function(_user) { // Note the use of spread instead of then, because save returns (object, numAffected)
+    console.log(_user.recentViews); // Our new product id is at the top.
+}).catch(function(err) {
+    // ...
+});
 ```
 
 ### Options
