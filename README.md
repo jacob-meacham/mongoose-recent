@@ -2,9 +2,9 @@
 
 A [mongoose](http://mongoosejs.com/) plugin for handling recently accessed data to be stored on a document
 
-[![Build Status](https://travis-ci.org/jacob-meacham/mongoose-recent.svg?branch=develop)](https://travis-ci.org/jacob-meacham/mongoose-recent)
+[![Build Status](https://travis-ci.org/jacob-meacham/mongoose-recent.svg?branch=master)](https://travis-ci.org/jacob-meacham/mongoose-recent)
 [![npm version](https://badge.fury.io/js/mongoose-recent.svg)](http://badge.fury.io/js/mongoose-recent)
-[![Coverage Status](https://coveralls.io/repos/jacob-meacham/mongoose-recent/badge.svg?branch=develop)](https://coveralls.io/r/jacob-meacham/mongoose-recent?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/jacob-meacham/mongoose-recent/badge.svg?branch=master)](https://coveralls.io/r/jacob-meacham/mongoose-recent?branch=master)
 [![Code Climate](https://codeclimate.com/github/jacob-meacham/mongoose-recent/badges/gpa.svg)](https://codeclimate.com/github/jacob-meacham/mongoose-recent)
 [![Dependency Status](https://www.versioneye.com/user/projects/554911185d4f9a0b9900127c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/554911185d4f9a0b9900127c)
 
