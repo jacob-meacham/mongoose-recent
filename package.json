@@ -1,7 +1,7 @@
 {
   "name": "mongoose-recent",
   "description": "A mongoose plugin for handling recently accessed data to be stored on a document.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "mongoose"
   ],
