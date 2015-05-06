@@ -29,7 +29,7 @@ kitty.addRecentHairball('eveningHairball').spread(function(cat) {
     console.log(cat.recentHairballs[0]); // { hairball: 'eveningHairball', date: Tue May 05 2015 10:17:53 }
 });
 ```
-(see a working example of this in [examples/](../blob/develop/examples/))
+(see a working example of this in [examples/](../blob/master/examples/))
 
 ### Usage
 mongoose-recent adds a new collection to your document, along with instance and static methods for adding recent items. This collection is kept in a date-sorted order (newest at the top), and by default does not allow duplicates and has a maximum size of 10 entries. If you re-add an entry that already exists in the collection, it will be bubbled back up to the top.
