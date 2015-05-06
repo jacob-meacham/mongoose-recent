@@ -7,7 +7,6 @@ var _ = require('lodash');
 Promise.promisifyAll(mongoose);
 var DefaultObjectId = mongoose.Schema.Types.ObjectId;
 
-// TODO: Promise or callback
 var setupOptions = function(options) {
   options = options || {};
 
@@ -30,10 +29,22 @@ var setupOptions = function(options) {
   return options;
 };
 
-var generateAddFunction = function(collectionPath, options) {
+var generateStaticAddFunction = function(collectionPath, options) {
+  return function(id, objectOrId, cb) {
+    return this.findOne(id).exec().then(function(self) {
+      var addFunction = generateAddFunction(collectionPath, options, self);
+      return addFunction(objectOrId, cb);
+    }).then(null, cb);
+  };
+};
+
+var generateAddFunction = function(collectionPath, options, self) {
   return function(objectOrId, cb) {
-    // TODO: Doesn't work in static case - need to do a find and update instead.
-    var collection = this[collectionPath];
+    if(!self) {
+      self = this;
+    }
+
+    var collection = self[collectionPath];
 
     var foundIdx = _.findIndex(collection, function(entry) {
       return options.compareFunc(objectOrId, entry[options.name]);
@@ -48,12 +59,12 @@ var generateAddFunction = function(collectionPath, options) {
       entry[options.dateFieldName] = Date.now();
     }
 
-    this[collectionPath] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
+    self[collectionPath] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
 
     if (cb) {
-      this.save(cb);
+      self.save(cb);
     } else {
-      return this.saveAsync();
+      return self.saveAsync();
     }
   };
 };
@@ -76,7 +87,7 @@ var plugin = function(schema, options) {
     schema.add(fields);
   }
 
-  // TODO: Also add static
+  schema.statics[addFuncName] = generateStaticAddFunction(collectionPath, options);
   schema.methods[addFuncName] = generateAddFunction(collectionPath, options);
 };
 
