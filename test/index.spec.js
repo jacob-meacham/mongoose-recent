@@ -175,7 +175,7 @@ describe('mongoose-recent', function() {
     var Test = mongoose.model('TestStatic', Schema);
     var testDoc = new Test();
 
-    testDoc.saveAsync().spread(function(me) {
+    return testDoc.saveAsync().spread(function(me) {
       return Test.addRecentView({_id: me._id}, mongoose.Types.ObjectId());
     }).spread(function(me) {
       me._id.should.eql(testDoc._id);
