@@ -32,19 +32,15 @@ var setupOptions = function(options) {
 var generateStaticAddFunction = function(collectionPath, options) {
   return function(id, objectOrId, cb) {
     return this.findOne(id).exec().then(function(self) {
-      var addFunction = generateAddFunction(collectionPath, options, self);
-      return addFunction(objectOrId, cb);
+      var addFunction = generateAddFunction(collectionPath, options);
+      return addFunction.call(self, objectOrId, cb);
     }).then(null, cb);
   };
 };
 
-var generateAddFunction = function(collectionPath, options, self) {
+var generateAddFunction = function(collectionPath, options) {
   return function(objectOrId, cb) {
-    if(!self) {
-      self = this;
-    }
-
-    var collection = self[collectionPath];
+    var collection = this[collectionPath];
 
     var foundIdx = _.findIndex(collection, function(entry) {
       return options.compareFunc(objectOrId, entry[options.name]);
@@ -59,12 +55,12 @@ var generateAddFunction = function(collectionPath, options, self) {
       entry[options.dateFieldName] = Date.now();
     }
 
-    self[collectionPath] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
+    this[collectionPath] = _(collection).sortBy('date').reverse().slice(0, options.numToKeep).value();
 
     if (cb) {
-      self.save(cb);
+      this.save(cb);
     } else {
-      return self.saveAsync();
+      return this.saveAsync();
     }
   };
 };
