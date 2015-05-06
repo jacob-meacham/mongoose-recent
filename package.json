@@ -1,7 +1,7 @@
 {
   "name": "mongoose-recent",
   "description": "A mongoose plugin for handling recently accessed data to be stored on a document.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "mongoose"
   ],
@@ -25,7 +25,8 @@
   ],
   "main": "./index.js",
   "files": [
-    "LICENSE"
+    "LICENSE",
+    "index.js"
   ],
   "scripts": {
     "test": "node node_modules/grunt-cli/bin/grunt ci"
