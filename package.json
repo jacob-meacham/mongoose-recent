@@ -50,6 +50,6 @@
     "chai": "2.3.0"
   },
   "peerDependencies": {
-    "mongoose": "> 3.5 < 4"
+    "mongoose": ">= 3.5 < 4"
   }
 }
