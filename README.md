@@ -198,5 +198,7 @@ Default: `false`
 By default, duplicates are not allowed. If you re-add an item that's already in the collection, it will be given a new date and moved to the top of the collection. If you want to track all recent instances, rather than just the most recent for an item, set this to true. When true, every call to addRecent will add a new entry to the collection.
 
 ### Versions
+* __1.0.3:__ Relax mongoose peer dependency further
+* __1.0.2:__ Relax mongoose peer dependency
 * __1.0.1:__ Fix issue when calling methods
 * __1.0.0:__ Initial Release
