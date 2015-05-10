@@ -2,9 +2,9 @@
 
 A [mongoose](http://mongoosejs.com/) plugin for handling recently accessed data to be stored on a document
 
-[![Build Status](https://travis-ci.org/jacob-meacham/mongoose-recent.svg?branch=master)](https://travis-ci.org/jacob-meacham/mongoose-recent)
+[![Build Status](https://travis-ci.org/jacob-meacham/mongoose-recent.svg?branch=develop)](https://travis-ci.org/jacob-meacham/mongoose-recent)
 [![npm version](https://badge.fury.io/js/mongoose-recent.svg)](http://badge.fury.io/js/mongoose-recent)
-[![Coverage Status](https://coveralls.io/repos/jacob-meacham/mongoose-recent/badge.svg?branch=master)](https://coveralls.io/r/jacob-meacham/mongoose-recent?branch=master)
+[![Coverage Status](https://coveralls.io/repos/jacob-meacham/mongoose-recent/badge.svg?branch=develop)](https://coveralls.io/r/jacob-meacham/mongoose-recent?branch=develop)
 [![Code Climate](https://codeclimate.com/github/jacob-meacham/mongoose-recent/badges/gpa.svg)](https://codeclimate.com/github/jacob-meacham/mongoose-recent)
 [![Dependency Status](https://www.versioneye.com/user/projects/554911185d4f9a0b9900127c/badge.svg?style=flat)](https://www.versioneye.com/user/projects/554911185d4f9a0b9900127c)
 
@@ -29,7 +29,7 @@ kitty.addRecentHairball('eveningHairball').spread(function(cat) {
     console.log(cat.recentHairballs[0]); // { hairball: 'eveningHairball', date: Tue May 05 2015 10:17:53 }
 });
 ```
-(see a working example of this in [examples/](../blob/master/examples/))
+(see a working example of this in [examples/](../blob/develop/examples/))
 
 ### Usage
 mongoose-recent adds a new collection to your document, along with instance and static methods for adding recent items. This collection is kept in a date-sorted order (newest at the top), and by default does not allow duplicates and has a maximum size of 10 entries. If you re-add an entry that already exists in the collection, it will be bubbled back up to the top.
